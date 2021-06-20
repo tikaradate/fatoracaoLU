@@ -2,8 +2,8 @@
     CFLAGS = -Wall -Wextra
     LFLAGS = -lm
 
-      PROG = fatoracaoLU
-      OBJS = utils.o
+      PROG = matrixInv
+      OBJS = utils.o matriz.o
 
 .PHONY: limpa faxina clean purge all
 
