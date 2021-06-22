@@ -1,9 +1,9 @@
     CC     = gcc -g -std=c11
-    CFLAGS = -Wall -Wextra
+    CFLAGS = -Wall
     LFLAGS = -lm
 
       PROG = matrixInv
-      OBJS = utils.o matriz.o
+      OBJS = utils.o matriz.o argumentos.o
 
 .PHONY: limpa faxina clean purge all
 
