@@ -1,8 +1,10 @@
 #include <stdio.h>
+
+#include "utils.h"
 #include "matriz.h"
 #include "argumentos.h"
 
-void triangularizacao(struct matriz *L, struct matriz *U, int pivoteia);
+void triangularizacao(struct matriz *L, struct matriz *U, int pivoteia, double *tempo);
 
 int encontraMax(struct matriz *M, int l);
 
@@ -12,6 +14,7 @@ void trocaLinha(struct matriz *M, int atual, int pivo);
 int main(int argc, char *argv[])
 {
     int n;
+    double tempo;
     struct matriz *L, *U, *I;
     struct argumentos args;
 
@@ -25,8 +28,8 @@ int main(int argc, char *argv[])
         imprimeMatriz(U);
         printf("\n");
 
-        triangularizacao(L, U, args.pivo);
-
+        triangularizacao(L, U, args.pivo, &tempo);
+        printf("Tempo Triangularização: %.50lf ms\n", tempo);
         imprimeMatriz(L);
         printf("\n");
         imprimeMatriz(U);
@@ -38,10 +41,10 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void triangularizacao(struct matriz *L, struct matriz *U, int pivoteia)
+void triangularizacao(struct matriz *L, struct matriz *U, int pivoteia, double *tempo)
 {
     int n = U->n;
-
+    *tempo = timestamp();
     for (int i = 0; i < n; ++i)
     {
         if (pivoteia)
@@ -65,17 +68,18 @@ void triangularizacao(struct matriz *L, struct matriz *U, int pivoteia)
         }
         L->m[i][i] = 1;
     }
+    *tempo = timestamp() - *tempo;
 }
 
 int encontraMax(struct matriz *M, int l)
 {
 	float max = 0;
 	int max_l = l;
-	for (int i = 0; i < l; i++)
+	for (int i = l; i < M->n; i++)
 	{
-		if (max < M->m[l][i])
+		if (max < M->m[i][l])
 		{
-			max = M->m[l][i];
+			max = M->m[i][l];
 			max_l = i;
 		}
 	}
