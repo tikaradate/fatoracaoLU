@@ -11,7 +11,7 @@ struct matriz *alocaMatriz(int n)
     matriz->n = n;
     matriz->m = malloc(sizeof(double *) * n);
     for (int i = 0; i < n; i++)
-        matriz->m[i] = malloc(sizeof(double) * n);
+        matriz->m[i] = calloc(n, sizeof(double));
 
     return matriz;
 }
