@@ -40,8 +40,6 @@ struct argumentos linha_de_comando(int argc, char *argv[]) {
     struct argumentos args;
     char *nome_programa;
 
-    nome_programa = argv[0];
-
     args.pivo = 0;
     args.output = NULL;
 
