@@ -1,5 +1,12 @@
 #ifndef __GAUSS__
 #define __GAUSS__
+
+
+/* 
+    descrição: 
+    paramêtros: 
+*/
+
 void triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, struct matriz *I, int pivoteia, double *tempo);
 
 int encontraMax(struct matriz *M, int l);

@@ -1,3 +1,7 @@
+/* 
+
+*/
+
 #ifndef __MATRIZ__
 #define __MATRIZ__
 #include <stdio.h>
@@ -10,11 +14,6 @@ struct matriz{
     int n;
     double **m;
 };
-
-/* 
-    descrição: 
-    paramêtros: 
-*/
 
 /* 
     descrição: função auxiliar de alocar matriz 
@@ -44,13 +43,36 @@ void leMatriz(struct matriz *matriz);
         matriz: a matriz a ser impressa
 */
 void imprimeMatriz(struct matriz *matriz, FILE *out);
-
+/* 
+    descrição: copia os valores da matriz source para a matriz dest
+    paramêtros:
+        source: a matriz a ser copiada
+        dest: a matriz que recebe a cópia
+*/
 void copiaMatriz(struct matriz *source, struct matriz *dest);
-
-void trocaLinha(struct matriz *M, int atual, int pivo);
-
-double *pegaColuna(struct matriz *M, int c);
-
-void botaColuna(struct matriz *M, int c, double *col);
+/* 
+    descrição: função que troca as linha atual da matriz com a linha do pivo da matriz
+    paramêtros: 
+        matriz: a matriz que terá as linhas trocadas
+        atual : a linha da matriz atual
+        pivo  : a linha com o maior elemento que trocará de lugar com a linha atual
+*/
+void trocaLinha(struct matriz *matriz, int atual, int pivo);
+/* 
+    descrição: função que retorna a coluna da matriz indicada por c 
+    paramêtros: 
+        matriz: a matriz que terá a coluna copiada
+        c     : indica qual coluna vai ser copiada
+    retorno: um ponteiro para a coluna
+*/
+double *pegaColuna(struct matriz *matriz, int c);
+/* 
+    descrição: função que insere a coluna indicada por c na matriz
+    paramêtros: 
+        matriz: a matriz que receberá a coluna
+        c     : indica qual coluna da matriz receberá os valores
+        col   : ponteiro que contém a coluna a ser copiada
+*/
+void botaColuna(struct matriz *matriz, int c, double *col);
 
 #endif
