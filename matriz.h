@@ -1,6 +1,6 @@
 #ifndef __MATRIZ__
 #define __MATRIZ__
-
+#include <stdio.h>
 /* 
     atributos:
         n: ordem da matriz
@@ -43,6 +43,14 @@ void leMatriz(struct matriz *matriz);
     paramêtros:
         matriz: a matriz a ser impressa
 */
-void imprimeMatriz(struct matriz *matriz);
+void imprimeMatriz(struct matriz *matriz, FILE *out);
+
+void copiaMatriz(struct matriz *source, struct matriz *dest);
+
+void trocaLinha(struct matriz *M, int atual, int pivo);
+
+double *pegaColuna(struct matriz *M, int c);
+
+void botaColuna(struct matriz *M, int c, double *col);
 
 #endif

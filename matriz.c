@@ -38,7 +38,7 @@ void leMatriz(struct matriz *matriz)
     }
 }
 
-void imprimeMatriz(struct matriz *matriz)
+void imprimeMatriz(struct matriz *matriz, FILE *out)
 {
     int n = matriz->n;
 
@@ -46,8 +46,47 @@ void imprimeMatriz(struct matriz *matriz)
     {
         for (int j = 0; j < n; j++)
         {
-            printf("% .6e ", matriz->m[i][j]);
+            fprintf(out ,"% .6e ", matriz->m[i][j]);
         }
-        putchar('\n');
+        fputc('\n', out);
+    }
+}
+
+void copiaMatriz(struct matriz *source, struct matriz *dest)
+{
+    int n = source->n;
+    dest->n = n;
+
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			dest->m[i][j] = source->m[i][j];
+}
+
+void trocaLinha(struct matriz *M, int atual, int pivo)
+{
+	double aux;
+	for (int i = 0; i < M->n; i++)
+	{
+		aux = M->m[atual][i];
+		M->m[atual][i] = M->m[pivo][i];
+		M->m[pivo][i] = aux;
+    }
+}
+
+double* pegaColuna(struct matriz *M, int c){
+    int n = M->n;
+    double* col = calloc(n, sizeof(double));
+
+    for(int i = 0; i < n; i++){
+        col[i] = M->m[i][c];
+    }
+    return col;
+}
+
+void botaColuna(struct matriz *M, int c, double *col){
+    int n = M->n;
+
+    for(int i = 0; i < n; i++){
+        M->m[i][c] = col[i];
     }
 }

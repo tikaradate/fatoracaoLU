@@ -6,9 +6,6 @@
 
 /* estruturas e funções necessárias para o argp.h */
 
-// descricao dos argumentos sem opcao
-//static char args_doc[] = "";
-
 // breve descricao das opcoes
 static struct argp_option options[] = {
     {0, 'p', 0, 0, "Paramêtro que indica se deve ser feito o pivoteamento parcial"},
@@ -38,7 +35,6 @@ static struct argp argp = {options, parse_opt, 0, 0};
 
 struct argumentos linha_de_comando(int argc, char *argv[]) {
     struct argumentos args;
-    char *nome_programa;
 
     args.pivo = 0;
     args.output = NULL;

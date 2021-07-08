@@ -18,4 +18,5 @@
 
 double timestamp(void);
 
+FILE *arruma_output(char *output);
 #endif // __UTILS_H__

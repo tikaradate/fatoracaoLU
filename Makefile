@@ -3,7 +3,7 @@
     LFLAGS = -lm
 
       PROG = matrixInv
-      OBJS = utils.o matriz.o argumentos.o
+      OBJS = utils.o matriz.o argumentos.o gauss.o
 
 .PHONY: limpa faxina clean purge all
 
@@ -19,4 +19,3 @@ limpa clean:
 faxina purge:   limpa
 	@rm -f *.o core a.out
 	@rm -f $(PROG)
-
