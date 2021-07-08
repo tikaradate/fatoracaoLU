@@ -13,11 +13,10 @@ void triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, stru
         {   
             int i_pivo = encontraMax(U, i);
             if (i != i_pivo)
-            {
-                
-                trocaLinha(U, i, i_pivo);
-                trocaLinha(A, i, i_pivo); // efetua a mesma troca de linhas na matriz original
-                trocaLinha(L, i, i_pivo);
+            {  
+                trocaLinha(U,  i, i_pivo);
+                trocaLinha(A,  i, i_pivo); // efetua a mesma troca de linhas na matriz original
+                trocaLinha(L,  i, i_pivo);
                 trocaLinha(Id, i, i_pivo); // efetua a mesma troca de linhas na matriz identidade
             }
         }
@@ -37,15 +36,16 @@ void triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, stru
     *tempo = timestamp() - *tempo;
 }
 
-int encontraMax(struct matriz *M, int l)
+int encontraMax(struct matriz *M, int c)
 {
 	float max = 0;
-	int max_l = l;
-	for (int i = l; i < M->n; i++)
+	// no começo linha e coluna são iguais
+	int max_l = c;
+	for (int i = c; i < M->n; i++)
 	{
-		if (max < M->m[i][l])
+		if (max < M->m[i][c])
 		{
-			max = M->m[i][l];
+			max = M->m[i][c];
 			max_l = i;
 		}
 	}
