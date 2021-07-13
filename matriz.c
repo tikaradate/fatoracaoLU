@@ -1,3 +1,11 @@
+/*
+ * Autores:
+ *   Jorge Lucas Vicilli Jabczenski
+ *     GRR20190372
+ *   Vinicius Tikara Venturi Date
+ *     GRR20190367  
+ *
+ */
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,11 +26,10 @@ struct matriz *alocaMatriz(int n)
 
 void liberaMatriz(struct matriz *matriz)
 {
-
     for (int i = 0; i < matriz->n; i++)
         free(matriz->m[i]);
-
     free(matriz->m);
+    free(matriz);
 }
 
 void leMatriz(struct matriz *matriz)

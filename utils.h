@@ -1,3 +1,11 @@
+/*
+ * Autores:
+ *   Jorge Lucas Vicilli Jabczenski
+ *     GRR20190372
+ *   Vinicius Tikara Venturi Date
+ *     GRR20190367  
+ *
+ */
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
@@ -15,8 +23,5 @@
     <trecho de programa do qual se deseja medir tempo>
     tempo = timestamp() - tempo;
 */
-
 double timestamp(void);
-
-FILE *arruma_output(char *output);
 #endif // __UTILS_H__

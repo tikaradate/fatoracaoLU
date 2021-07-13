@@ -1,3 +1,11 @@
+/*
+ * Autores:
+ *   Jorge Lucas Vicilli Jabczenski
+ *     GRR20190372
+ *   Vinicius Tikara Venturi Date
+ *     GRR20190367  
+ *
+ */
 #include <stdio.h>
 #include <math.h>
 
@@ -57,6 +65,9 @@ int main(int argc, char *argv[])
             tempo_x += tempo;
             // insere a coluna calculada(x) na matriz inversa
             botaColuna(Inv, i, x);
+            free(b);
+            free(x);
+            free(y);
         }
 
         imprimeMatriz(Inv, out);
@@ -69,11 +80,20 @@ int main(int argc, char *argv[])
 
         // para cada coluna da matriz inversa, calcula a norma L2
         for(int i = 0; i < n; i++){
-            double *res;
+            double *res, *colInv, *colId;
             double *normas = malloc(sizeof(double)*n);
-            res = residuo(A, pegaColuna(Inv, i), pegaColuna(Id, i));
+
+            colInv = pegaColuna(Inv, i);
+            colId = pegaColuna(Id, i);
+            res = residuo(A, colInv, colId);
+
             normas[i] = normaL2Residuo(n, res);
             fprintf(out, "%.16lf ", normas[i]);
+            
+            free(res);
+            free(normas);
+            free(colId);
+            free(colInv);
         }
         fprintf(out, "\n\n");
 

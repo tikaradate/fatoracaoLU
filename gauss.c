@@ -1,3 +1,11 @@
+/*
+ * Autores:
+ *   Jorge Lucas Vicilli Jabczenski
+ *     GRR20190372
+ *   Vinicius Tikara Venturi Date
+ *     GRR20190367  
+ *
+ */
 #include <math.h>
 #include "matriz.h"
 #include "gauss.h"
@@ -14,10 +22,12 @@ void triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, stru
             int i_pivo = encontraMax(U, i);
             if (i != i_pivo)
             {  
+				// efetua as trocas de linhas nas matrizes necessárias:
+				// U, A ,L e Id
                 trocaLinha(U,  i, i_pivo);
-                trocaLinha(A,  i, i_pivo); // efetua a mesma troca de linhas na matriz original
+                trocaLinha(A,  i, i_pivo);
                 trocaLinha(L,  i, i_pivo);
-                trocaLinha(Id, i, i_pivo); // efetua a mesma troca de linhas na matriz identidade
+                trocaLinha(Id, i, i_pivo);
             }
         }
 
@@ -40,6 +50,7 @@ int encontraMax(struct matriz *M, int c)
 {
 	float max = 0;
 	// no começo linha e coluna são iguais
+	// por isso temos essa inicialização
 	int max_l = c;
 	for (int i = c; i < M->n; i++)
 	{
@@ -92,8 +103,7 @@ double* retrossubLower(struct matriz *M, double* b, double *tempo){
 double* residuo(struct matriz *M, double *x, double *colId)
 {
     int n = M->n;
-	double *r;
-	r = calloc(n, sizeof(double));
+	double *r = calloc(n, sizeof(double));
 
 	for (int i = 0; i < n; i++)
 	{
@@ -101,9 +111,9 @@ double* residuo(struct matriz *M, double *x, double *colId)
 		{
 			r[i] += (M->m[i][j] * x[j]);
 		}
-		// r tem Ax_n após o for de cima
-		// subtraímos de b para então termos o resíduo
-
+		// r tem o resultado da multiplicação após o laço acima
+		// subtraímos da coluna da matriz Identidade
+		// para então termos o resíduo
 		r[i] = colId[i] - r[i];
 	}
 	return r;

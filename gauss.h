@@ -1,3 +1,12 @@
+/*
+ * Autores:
+ *   Jorge Lucas Vicilli Jabczenski
+ *     GRR20190372
+ *   Vinicius Tikara Venturi Date
+ *     GRR20190367  
+ *
+ */
+
 #ifndef __GAUSS__
 #define __GAUSS__
 /* 
