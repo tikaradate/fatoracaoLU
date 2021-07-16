@@ -11,7 +11,7 @@
 #include "gauss.h"
 #include "utils.h"
 
-void triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, struct matriz *Id, int pivoteia, double *tempo)
+int triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, struct matriz *Id, int pivoteia, double *tempo)
 {
     int n = U->n;
     *tempo = timestamp();
@@ -35,6 +35,9 @@ void triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, stru
         {
             double m = U->m[j][i] / U->m[i][i];
 
+			if(isnan(m) || isinf(m))
+				return -1;
+
             U->m[j][i] = 0.0;
             for (int k = i + 1; k < n; k++)
                 U->m[j][k] -= U->m[i][k] * m;
@@ -44,6 +47,7 @@ void triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, stru
         L->m[i][i] = 1;
     }
     *tempo = timestamp() - *tempo;
+	return 0;
 }
 
 int encontraMax(struct matriz *M, int c)
@@ -63,41 +67,47 @@ int encontraMax(struct matriz *M, int c)
 	return max_l;
 }
 
-double* retrossub(struct matriz *M, double* b, double *tempo){
+int retrossub(struct matriz *M, double* b, double *tempo, double **x){
     int n = M->n;
-    double *x = alocaVet(n);
+    double *aux = alocaVet(n);
 
     *tempo = timestamp();
     for (int i = n - 1; i >= 0; i--)
 	{
-		x[i] = b[i];
+		aux[i] = b[i];
 		for (int j = i + 1; j < n; j++)
 		{
-			x[i] -= M->m[i][j] * x[j];
+			aux[i] -= M->m[i][j] * aux[j];
 		}
-		x[i] /= M->m[i][i];
+		aux[i] /= M->m[i][i];
+		if(isnan(aux[i]) || isinf(aux[i]))
+			return -1;
     }
     *tempo = timestamp() - *tempo;
-    return x;
+    *x = aux;
+	return 0;
 }
 
-double* retrossubLower(struct matriz *M, double* b, double *tempo){
+int retrossubLower(struct matriz *M, double* b, double *tempo, double **x){
     int n = M->n;
-    double *x = alocaVet(n);
+    double *aux = alocaVet(n);
 
     *tempo = timestamp();
     for (int i = 0; i < n; i++)
 	{
-		x[i] = b[i];
+		aux[i] = b[i];
 		for (int j = i - 1; j >= 0; j--)
 		{
-			x[i] -= M->m[i][j] * x[j];
+			aux[i] -= M->m[i][j] * aux[j];
 		}
-		x[i] /= M->m[i][i];
+		aux[i] /= M->m[i][i];
+		if(isnan(aux[i]) || isinf(aux[i]))
+			return -1;
     }
 
     *tempo = timestamp() - *tempo;
-    return x;
+	*x = aux;
+    return 0;
 }
 
 double* residuo(struct matriz *M, double *x, double *colId)

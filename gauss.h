@@ -19,9 +19,10 @@
         Id: a matriz identidade
         pivoteia: paramêtro que indica se é necessário o pivoteamento
         tempo: variável que armazena o tempo das operações
-
+    retorno:
+        -1 se teve algum NaN ou inf e 0 se tudo ok
 */
-void triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, struct matriz *Id, int pivoteia, double *tempo);
+int triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, struct matriz *Id, int pivoteia, double *tempo);
 /* 
     descrição: encontra o maior elemento de tal coluna
     paramêtros: 
@@ -35,19 +36,21 @@ int encontraMax(struct matriz *matriz, int c);
     paramêtros: 
         matriz: a matriz que será feita a retrossubstituição
         b     : o vetor que age como vetor resposta
-        tempo: variável que armazena o tempo das operações
-    retorno: ponteiro que contém os valores resultantes da retrossubstituição
+        tempo : variável que armazena o tempo das operações
+        x     : ponteiro para o vetor resposta da retrossubstituição
+    retorno: 0 se tudo certo, -1 se alguma conta gerou um número dúbio
 */
-double *retrossub(struct matriz *matriz, double* b, double *tempo);
+int retrossub(struct matriz *matriz, double* b, double *tempo, double **x);
 /* 
     descrição: faz a retrossubstituição de uma matriz triangular inferior
     paramêtros:
         matriz: a matriz que será feita a retrossubstituição
         b     : o vetor que age como vetor resposta
         tempo: variável que armazena o tempo das operações
-    retorno: ponteiro que contém os valores resultantes da retrossubstituição
+        x     : ponteiro para o vetor resposta da retrossubstituição
+    retorno: 0 se tudo certo, -1 se alguma conta gerou um número dúbio
 */
-double *retrossubLower(struct matriz *matriz, double* b, double *tempo);
+int retrossubLower(struct matriz *matriz, double* b, double *tempo, double **x);
 /* 
     descrição: função que calcula o resíduo de dado vetor resultante
     paramêtros: 
