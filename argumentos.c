@@ -16,6 +16,8 @@
 /* 
    struct básica do argp.h, 
    auxilia na documentação dos argumentos da linha de comando
+   cada linha representa uma das opções, com a possibilidade de 
+   um versão longa do mesmo
 */
 static struct argp_option options[] = {
     {0, 'p', 0, 0, "Paramêtro que indica se deve ser feito o pivoteamento parcial"},
@@ -43,7 +45,11 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
 }
 
 /*
-    TODO
+    struct argp parser
+    o primeiro argumento são as opções escritas na linha 22
+    o segundo é um ponteiro para a função parse_opt escrita acima,
+    essa struct é usada na chamada de argp_parse, que é onde todo tratamento
+    da linha de comando acontece
 */
 static struct argp argp = {options, parse_opt, 0, 0};
 /* fim parte necessária de argp.h */
@@ -54,6 +60,8 @@ struct argumentos linha_de_comando(int argc, char *argv[]) {
     args.pivo = 0;
     args.output = NULL;
 
+    // chamada da função que vai realmente tratar da linha de comando
+    // com os devidos argumentos montados acima
     argp_parse(&argp, argc, argv, 0, 0, &args);
 
     return args;

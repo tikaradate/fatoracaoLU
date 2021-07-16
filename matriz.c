@@ -15,11 +15,24 @@ struct matriz *alocaMatriz(int n)
 {
     struct matriz *matriz;
     matriz = malloc(sizeof(struct matriz));
+    if(!matriz){
+        fprintf(stderr, "Falha ao alocar estrutura da matriz, abortando...\n");
+        exit(1);
+    }
 
     matriz->n = n;
     matriz->m = malloc(sizeof(double *) * n);
-    for (int i = 0; i < n; i++)
+    if(!matriz->m){
+        fprintf(stderr, "Falha ao alocar vetor de ponteiros de %d posições, abortando...\n", n);
+        exit(1);
+    }
+    for (int i = 0; i < n; i++){
         matriz->m[i] = calloc(n, sizeof(double));
+        if(!matriz->m[i]){
+            fprintf(stderr, "Falha ao alocar vetor de %d posições, abortando...\n", n);
+            exit(1);
+        }
+    }
 
     return matriz;
 }
@@ -28,6 +41,7 @@ void liberaMatriz(struct matriz *matriz)
 {
     for (int i = 0; i < matriz->n; i++)
         free(matriz->m[i]);
+
     free(matriz->m);
     free(matriz);
 }
@@ -69,31 +83,43 @@ void copiaMatriz(struct matriz *source, struct matriz *dest)
 			dest->m[i][j] = source->m[i][j];
 }
 
-void trocaLinha(struct matriz *M, int atual, int pivo)
+void trocaLinha(struct matriz *matriz, int atual, int pivo)
 {
 	double aux;
-	for (int i = 0; i < M->n; i++)
+	for (int i = 0; i < matriz->n; i++)
 	{
-		aux = M->m[atual][i];
-		M->m[atual][i] = M->m[pivo][i];
-		M->m[pivo][i] = aux;
+		aux = matriz->m[atual][i];
+		matriz->m[atual][i] = matriz->m[pivo][i];
+		matriz->m[pivo][i] = aux;
     }
 }
 
-double* pegaColuna(struct matriz *M, int c){
-    int n = M->n;
+double* pegaColuna(struct matriz *matriz, int c){
+    int n = matriz->n;
     double* col = calloc(n, sizeof(double));
+    if(!col){
+        fprintf(stderr, "Falha ao alocar vetor de %d posições, abortando...\n", n);
+        exit(1);
+    }
 
     for(int i = 0; i < n; i++){
-        col[i] = M->m[i][c];
+        col[i] = matriz->m[i][c];
     }
     return col;
 }
 
-void botaColuna(struct matriz *M, int c, double *col){
-    int n = M->n;
+void botaColuna(struct matriz *matriz, int c, double *col){
+    int n = matriz->n;
 
     for(int i = 0; i < n; i++){
-        M->m[i][c] = col[i];
+        matriz->m[i][c] = col[i];
     }
+}
+
+int checaInversibilidade(struct matriz *matriz){
+    double mult = 1;
+    for(int i = 0; i < matriz->n; i++){
+        mult *= matriz->m[i][i];
+    }
+    return (mult != 0);
 }

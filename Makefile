@@ -4,14 +4,14 @@
 #   Vinicius Tikara Venturi Date
 #     GRR20190367  
 
-    CC     = gcc -g -std=c11 -g
+    CC     = gcc -g -std=c11
     CFLAGS = -Wall
     LFLAGS = -lm
 
       PROG = matrixInv
       OBJS = utils.o matriz.o argumentos.o gauss.o
 
-.PHONY: limpa faxina clean purge all
+.PHONY: clean all
 
 %.o: %.c %.h utils.h
 	$(CC) -c $(CFLAGS) $<
@@ -19,9 +19,6 @@
 $(PROG) : % :  $(OBJS) %.o
 	$(CC) -o $@ $^ $(LFLAGS)
 
-limpa clean:
-	@rm -f *~ *.bak
-
-faxina purge:	limpa
-	@rm -f *.o core a.out
+clean: 
+	@rm -f *.o
 	@rm -f $(PROG)

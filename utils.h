@@ -24,4 +24,11 @@
     tempo = timestamp() - tempo;
 */
 double timestamp(void);
+/* 
+    descrição: função que aloca e checa se o vetor foi alocado corretamente
+    paramêtros: 
+        n: quantidade de elementos
+    retorno: ponteiro para o vetor recém-alocado.
+*/
+double *alocaVet(int n);
 #endif // __UTILS_H__

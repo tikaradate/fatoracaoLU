@@ -2,7 +2,7 @@
 Iremos descrever as bibliotecas elaboradas para resolver o problema de encontrar matrizes inversas pelo método de fatoração LU.
 
 ## Detalhes gerais
-Durante o programa utilizamos diversas matrizes, com o nome abreviado, aqui a relação desses nomes:
+Durante o programa utilizamos diversas matrizes, com o nome abreviado, aqui está a relação desses nomes:
 
 - A   = matriz de entrada
 - L   = Lower
@@ -11,7 +11,8 @@ Durante o programa utilizamos diversas matrizes, com o nome abreviado, aqui a re
 - Inv = Inversa
 
 ## argumentos.h
-Biblioteca que cuida da breve parte de tratamento de argumentos pedida na especificação.
+Biblioteca que cuida da breve parte de tratamento de argumentos pedida na especificação:
+- Arruma Output
 
 ## gauss.h
 Biblioteca responsável por todas as operações referentes à Eliminação de Gauss, tais como:
@@ -31,6 +32,9 @@ Biblioteca que contém operações comuns de manipulação de matrizes:
 - Copiar
 - Troca de linhas
 - Substituição de colunas
+- Checagem de inversibilidade
 
 ## utils.h
-Biblioteca que possui funções miscelâneas como aquela que conta o tempo, cortesia dos professores, e outra que arruma para onde será escrita a saída do programa.
+Biblioteca que possui funções miscelâneas como:
+- Timestamp (cortesia dos professores)
+- Uma que aloca e checa a validade de um ponteiro para n doubles

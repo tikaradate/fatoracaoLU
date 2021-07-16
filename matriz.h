@@ -78,5 +78,12 @@ double *pegaColuna(struct matriz *matriz, int c);
         col   : ponteiro que contém a coluna a ser copiada
 */
 void botaColuna(struct matriz *matriz, int c, double *col);
+/* 
+    descrição: função que checa se dada matriz na sua forma triangular é inversível
+    paramêtros: 
+        matriz: a matriz que será analisada
+    retorno: 1 se inversível, 0 caso contrário
+*/
+int checaInversibilidade(struct matriz *matriz);
 
 #endif

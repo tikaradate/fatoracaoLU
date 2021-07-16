@@ -65,7 +65,7 @@ int encontraMax(struct matriz *M, int c)
 
 double* retrossub(struct matriz *M, double* b, double *tempo){
     int n = M->n;
-    double *x = calloc(n, sizeof(double));
+    double *x = alocaVet(n);
 
     *tempo = timestamp();
     for (int i = n - 1; i >= 0; i--)
@@ -83,7 +83,7 @@ double* retrossub(struct matriz *M, double* b, double *tempo){
 
 double* retrossubLower(struct matriz *M, double* b, double *tempo){
     int n = M->n;
-    double *x = calloc(n, sizeof(double));
+    double *x = alocaVet(n);
 
     *tempo = timestamp();
     for (int i = 0; i < n; i++)
@@ -103,7 +103,7 @@ double* retrossubLower(struct matriz *M, double* b, double *tempo){
 double* residuo(struct matriz *M, double *x, double *colId)
 {
     int n = M->n;
-	double *r = calloc(n, sizeof(double));
+	double *r = alocaVet(n);
 
 	for (int i = 0; i < n; i++)
 	{

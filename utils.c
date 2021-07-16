@@ -26,3 +26,12 @@ double timestamp(void)
     gettimeofday(&tp, NULL);
     return ((double)(tp.tv_sec * 1000.0 + tp.tv_usec / 1000.0));
 }
+
+double *alocaVet(int n){
+    double *vet = calloc(n, sizeof(double));
+    if(!vet){
+        fprintf(stderr, "Falha ao alocar vetor de %d posições, abortando...\n", n);
+        exit(1);
+    }
+    return vet;
+}

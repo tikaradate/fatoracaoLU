@@ -16,7 +16,7 @@
 
 int main(int argc, char *argv[])
 {
-    int n;
+    int n, cont = 0;
     double tempo, tempo_tri,
            tempo_x = 0, 
            tempo_y = 0;
@@ -51,58 +51,64 @@ int main(int argc, char *argv[])
 
         // gera as matrizes Lower e Upper
         triangularizacao(A, L, U, Id, args.pivo, &tempo_tri);
+        if (!checaInversibilidade(U)){
+            fprintf(stderr, ">>> Matriz dada na entrada %d não é inversível <<<\n", cont);
+        } else {
 
-        // de coluna em coluna da matriz identidade,
-        // resolve os sistemas para obtenção da matriz inversa
-        for(int i = 0; i < n; i++){
-            // pega a coluna da matriz identidade a ser usada como b
-            b = pegaColuna(Id, i);
-            // acha y (Ly = b)
-            y = retrossubLower(L, b, &tempo);
-            tempo_y += tempo;
-            // acha x (Ux = y)
-            x = retrossub(U, y, &tempo);
-            tempo_x += tempo;
-            // insere a coluna calculada(x) na matriz inversa
-            botaColuna(Inv, i, x);
-            free(b);
-            free(x);
-            free(y);
+            // de coluna em coluna da matriz identidade,
+            // resolve os sistemas para obtenção da matriz inversa
+            for(int i = 0; i < n; i++){
+                // pega a coluna da matriz identidade a ser usada como b
+                b = pegaColuna(Id, i);
+                // acha y (Ly = b)
+                y = retrossubLower(L, b, &tempo);
+                tempo_y += tempo;
+                // acha x (Ux = y)
+                x = retrossub(U, y, &tempo);
+                tempo_x += tempo;
+                // insere a coluna calculada(x) na matriz inversa
+                botaColuna(Inv, i, x);
+                free(b);
+                free(x);
+                free(y);
+            }
+
+            imprimeMatriz(Inv, out);
+            fprintf(out, "###############\n");
+            fprintf(out, "# Tempo Triangularização: %.16lf ms\n"
+                        "# Tempo de cálculo do x : %.16lf ms\n"
+                        "# Tempo de cálculo do y : %.16lf ms\n",
+                    tempo_tri, tempo_x/n, tempo_y/n);
+            fprintf(out, "# Valores das %d normas L2 dos resíduos:\n", n);
+
+            // para cada coluna da matriz inversa, calcula a norma L2
+            for(int i = 0; i < n; i++){
+                double *res, *colInv, *colId;
+                double *normas = alocaVet(n);
+
+                colInv = pegaColuna(Inv, i);
+                colId = pegaColuna(Id, i);
+                res = residuo(A, colInv, colId);
+
+                normas[i] = normaL2Residuo(n, res);
+                fprintf(out, "%.10e ", normas[i]);
+                
+                free(res);
+                free(normas);
+                free(colId);
+                free(colInv);
+            }
+            fprintf(out, "\n\n");
         }
-
-        imprimeMatriz(Inv, out);
-        fprintf(out, "###############\n");
-        fprintf(out, "# Tempo Triangularização: %.16lf ms\n"
-                     "# Tempo de cálculo do x : %.16lf ms\n"
-                     "# Tempo de cálculo do y : %.16lf ms\n",
-                tempo_tri, tempo_x/n, tempo_y/n);
-        fprintf(out, "# Valores das %d normas L2 dos resíduos:\n", n);
-
-        // para cada coluna da matriz inversa, calcula a norma L2
-        for(int i = 0; i < n; i++){
-            double *res, *colInv, *colId;
-            double *normas = malloc(sizeof(double)*n);
-
-            colInv = pegaColuna(Inv, i);
-            colId = pegaColuna(Id, i);
-            res = residuo(A, colInv, colId);
-
-            normas[i] = normaL2Residuo(n, res);
-            fprintf(out, "%.16lf ", normas[i]);
-            
-            free(res);
-            free(normas);
-            free(colId);
-            free(colInv);
-        }
-        fprintf(out, "\n\n");
-
+        // incrementa a quantidade de matrizes já fatoradas
+        cont++;
         liberaMatriz(A);
         liberaMatriz(L);
         liberaMatriz(U);
         liberaMatriz(Inv);
         liberaMatriz(Id);
     }
+
     fclose(out);    
     return 0;
 }
