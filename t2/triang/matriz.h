@@ -16,7 +16,7 @@
  */
 struct matriz{
     int n;
-    double **m;
+    double *m;
 };
 
 /* 

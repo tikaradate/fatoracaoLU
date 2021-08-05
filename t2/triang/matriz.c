@@ -21,17 +21,10 @@ struct matriz *alocaMatriz(int n)
     }
 
     matriz->n = n;
-    matriz->m = malloc(sizeof(double *) * n);
+    matriz->m = malloc(sizeof(double *)*n*n);
     if(!matriz->m){
         fprintf(stderr, "Falha ao alocar vetor de ponteiros de %d posições, abortando...\n", n);
         exit(1);
-    }
-    for (int i = 0; i < n; i++){
-        matriz->m[i] = calloc(n, sizeof(double));
-        if(!matriz->m[i]){
-            fprintf(stderr, "Falha ao alocar vetor de %d posições, abortando...\n", n);
-            exit(1);
-        }
     }
 
     return matriz;
@@ -39,9 +32,6 @@ struct matriz *alocaMatriz(int n)
 
 void liberaMatriz(struct matriz *matriz)
 {
-    for (int i = 0; i < matriz->n; i++)
-        free(matriz->m[i]);
-
     free(matriz->m);
     free(matriz);
 }
@@ -54,7 +44,7 @@ void leMatriz(struct matriz *matriz)
     {
         for (int j = 0; j < n; j++)
         {
-            scanf("%lf", &matriz->m[i][j]);
+            scanf("%lf", &matriz->m[i*n + j]);
         }
     }
 }
@@ -67,7 +57,7 @@ void imprimeMatriz(struct matriz *matriz, FILE *out)
     {
         for (int j = 0; j < n; j++)
         {
-            fprintf(out ,"% .6e ", matriz->m[i][j]);
+            fprintf(out ,"% .6e ", matriz->m[i*n + j]);
         }
         fputc('\n', out);
     }
@@ -80,17 +70,18 @@ void copiaMatriz(struct matriz *source, struct matriz *dest)
 
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < n; j++)
-			dest->m[i][j] = source->m[i][j];
+			dest->m[i*n + j] = source->m[i*n + j];
 }
 
 void trocaLinha(struct matriz *matriz, int atual, int pivo)
 {
 	double aux;
-	for (int i = 0; i < matriz->n; i++)
+    int n = matriz->n;
+	for (int i = 0; i < n; i++)
 	{
-		aux = matriz->m[atual][i];
-		matriz->m[atual][i] = matriz->m[pivo][i];
-		matriz->m[pivo][i] = aux;
+		aux = matriz->m[atual*n + i];
+		matriz->m[atual*n + i] = matriz->m[pivo*n + i];
+		matriz->m[pivo*n + i] = aux;
     }
 }
 
@@ -103,7 +94,7 @@ double* pegaColuna(struct matriz *matriz, int c){
     }
 
     for(int i = 0; i < n; i++){
-        col[i] = matriz->m[i][c];
+        col[i] = matriz->m[i*n + c];
     }
     return col;
 }
@@ -112,14 +103,15 @@ void botaColuna(struct matriz *matriz, int c, double *col){
     int n = matriz->n;
 
     for(int i = 0; i < n; i++){
-        matriz->m[i][c] = col[i];
+        matriz->m[i*n + c] = col[i];
     }
 }
 
 int checaInversibilidade(struct matriz *matriz){
     double mult = 1;
-    for(int i = 0; i < matriz->n; i++){
-        mult *= matriz->m[i][i];
+    int n = matriz->n;
+    for(int i = 0; i < n; i++){
+        mult *= matriz->m[i*n + i];
     }
     return (mult != 0);
 }

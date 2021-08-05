@@ -33,18 +33,18 @@ int triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, struc
 
 		for (int j = i + 1; j < n; j++)
 		{
-			double m = U->m[j][i] / U->m[i][i];
+			double m = U->m[j*n + i] / U->m[i*n + i];
 
 			// if(isnan(m) || isinf(m))
 			// 	return -1;
 
-			U->m[j][i] = 0.0;
+			U->m[j*n + i] = 0.0;
 			for (int k = i + 1; k < n; k++)
-				U->m[j][k] -= U->m[i][k] * m;
+				U->m[j*n + k] -= U->m[i*n + k] * m;
 
-			L->m[j][i] = m;
+			L->m[j*n + i] = m;
 		}
-		L->m[i][i] = 1;
+		L->m[i*n + i] = 1;
 	}
 	*tempo = timestamp() - *tempo;
 	return 0;
@@ -53,14 +53,15 @@ int triangularizacao(struct matriz *A, struct matriz *L, struct matriz *U, struc
 int encontraMax(struct matriz *M, int c)
 {
 	float max = 0;
+	int n =  M->n;
 	// no começo linha e coluna são iguais
 	// por isso temos essa inicialização
 	int max_l = c;
-	for (int i = c; i < M->n; i++)
+	for (int i = c; i < n; i++)
 	{
-		if (max < fabs(M->m[i][c]) && M->m[i][c] != 0 )
+		if (max < fabs(M->m[i*n + c]) && M->m[i*n + c] != 0 )
 		{
-			max = M->m[i][c];
+			max = M->m[i*n + c];
 			max_l = i;
 		}
 	}
@@ -77,9 +78,9 @@ int retrossub(struct matriz *M, double* b, double *tempo, double **x){
 		aux[i] = b[i];
 		for (int j = i + 1; j < n; j++)
 		{
-			aux[i] -= M->m[i][j] * aux[j];
+			aux[i] -= M->m[i*n + j] * aux[j];
 		}
-		aux[i] /= M->m[i][i];
+		aux[i] /= M->m[i*n + i];
 		if(isnan(aux[i]) || isinf(aux[i]))
 			return -1;
 	}
@@ -98,9 +99,9 @@ int retrossubLower(struct matriz *M, double* b, double *tempo, double **x){
 		aux[i] = b[i];
 		for (int j = i - 1; j >= 0; j--)
 		{
-			aux[i] -= M->m[i][j] * aux[j];
+			aux[i] -= M->m[i*n + j] * aux[j];
 		}
-		aux[i] /= M->m[i][i];
+		aux[i] /= M->m[i*n + i];
 		if(isnan(aux[i]) || isinf(aux[i]))
 			return -1;
 	}
@@ -119,7 +120,7 @@ double* residuo(struct matriz *M, double *x, double *colId)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			r[i] += (M->m[i][j] * x[j]);
+			r[i] += (M->m[i*n + j] * x[j]);
 		}
 		// r tem o resultado da multiplicação após o laço acima
 		// subtraímos da coluna da matriz Identidade

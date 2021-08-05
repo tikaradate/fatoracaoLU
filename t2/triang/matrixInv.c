@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
         printf("%p\n", Id);
         // inicilializa diagonal da matriz identidade
         for(int i = 0; i < n; i++){
-            Id->m[i][i] = 1; 
+            Id->m[i*n + i] = 1; 
         }
 
         leMatriz(A);
@@ -67,9 +67,18 @@ int main(int argc, char *argv[])
                 // acha y (Ly = b)
                 flag = retrossubLower(L, b, &tempo, &y);
                 tempo_y += tempo;
+                if(!y){
+                    free(b);
+                    break;
+                }
                 // acha x (Ux = y)
                 flag = retrossub(U, y, &tempo, &x);
                 tempo_x += tempo;
+                if(!x){
+                    free(b);
+                    free(y);
+                    break;
+                }
                 // insere a coluna calculada(x) na matriz inversa
                 botaColuna(Inv, i, x);
                 free(b);
