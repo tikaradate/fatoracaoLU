@@ -1,0 +1,47 @@
+# ICC - Fatoração LU
+Para o trabalho foram desenvolvidas bibliotecas para encontrar matrizes inversas pelo método de fatoração LU, a seguir uma breve descrição de cada uma dessas.
+
+## Detalhes gerais
+A matriz foi representada por uma estrutura que contém:
+- A ordem da matriz
+- O ponteiro para ponteiros aonde são guardados os valores da matriz
+
+Durante o programa utilizamos diversas matrizes com os nomes abreviados:
+- A   = matriz de entrada
+- L   = Lower
+- U   = Upper
+- Id  = Identidade
+- Inv = Inversa
+
+## argumentos.h
+Os argumentos da linha de comando são guardados em uma estrutura, desta forma podem ser acessados.
+A biblioteca cuida da breve parte de tratamento de argumentos pedida na especificação, utilizando a biblioteca argp.h:
+- Arruma Output
+Ajeita o output de forma que ou escreve na saída padrão ou escreve no arquivo requisitado pelo usuário.
+
+## gauss.h
+Biblioteca responsável por todas as operações referentes à Eliminação de Gauss e também a triangularização:
+ - Retrossubstituição
+ - Retrossubstituição Inversa, para a matriz Lower
+ Para a matriz Lower foi feita uma retrossubstituição especial, uma que começa a partir da primeira linha e desce 
+ conforme os valores são calculados, uma versão inversa da Retrossubstituição normal.
+ - Triangularização
+ - Encontra Máximo
+ - Resíduo
+ - NormaL2
+
+## matriz.h
+Biblioteca que contém operações comuns de manipulação de matrizes:
+- Alocar
+- Liberar
+- Ler
+- Imprimir
+- Copiar
+- Trocar linhas
+- Substituição de colunas
+- Checagem de inversibilidade
+
+## utils.h
+Biblioteca que possui funções miscelâneas como:
+- Timestamp (cortesia dos professores)
+- Uma que aloca e checa a validade de um ponteiro para n doubles

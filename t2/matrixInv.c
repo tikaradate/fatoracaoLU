@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
         L   = alocaMatriz(n);
         Inv = alocaMatriz(n);
         Id  = alocaMatriz(n);
+        printf("%p\n", Id);
         // inicilializa diagonal da matriz identidade
         for(int i = 0; i < n; i++){
             Id->m[i][i] = 1; 
