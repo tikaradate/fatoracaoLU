@@ -60,7 +60,7 @@ void imprimeMatriz(struct matriz *matriz, FILE *out)
     {
         for (int j = 0; j < n; j++)
         {
-            fprintf(out ,"% .6e ", matriz->mat[i*n + j]);
+            fprintf(out ,"%.8e ", matriz->mat[i*n + j]);
         }
         fputc('\n', out);
     }

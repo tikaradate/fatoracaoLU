@@ -18,14 +18,14 @@ int triangularizacao(struct matriz *L, struct matriz *U)
 	for (int i = 0; i < m; ++i)
 	{
 
-		int i_pivo = encontraMax(U, i);
-		if (i != i_pivo)
-		{  
-			// efetua as trocas de linhas nas matrizes necessárias:
-			// U e L 
-			trocaLinha(U,  i, i_pivo);
-			trocaLinha(L,  i, i_pivo);
-		}
+		// int i_pivo = encontraMax(U, i);
+		// if (i != i_pivo)
+		// {  
+		// 	// efetua as trocas de linhas nas matrizes necessárias:
+		// 	// U e L 
+		// 	trocaLinha(U,  i, i_pivo);
+		// 	trocaLinha(L,  i, i_pivo);
+		// }
 
 		for (int j = i + 1; j < n; j++)
 		{
