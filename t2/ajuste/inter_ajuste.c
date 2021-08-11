@@ -10,9 +10,18 @@ struct matriz *montaInterpolacao(struct matriz *x){
     int n = x->n;
     mat = alocaMatriz(n, n);
 
+    // for(int i = 0; i < n; i++){
+    //     for(int j = 0; j < n; j++){
+    //         mat->mat[i*n + j] = pow(x->mat[i], j);
+    //     }
+    // }
     for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            mat->mat[i*n + j] = pow(x->mat[i], j);
+         mat->mat[i*n] = 1;
+    }
+
+    for(int i = 0; i < n; i++){
+        for(int j = 1; j < n; j++){
+            mat->mat[i*n + j] = mat->mat[i*n + (j-1)]*x->mat[i];
         }
     }
 
@@ -23,12 +32,18 @@ struct matriz *montaInterpolacao(struct matriz *x){
 struct matriz *montaAjuste(struct matriz *x){
     struct matriz *kurwa;
     int n = x->n;
-    double *somas = calloc(n+n, sizeof(double));
-
+    double *somas = calloc(n+n+1,sizeof(double));
+    // double *pots  = calloc(n+n+1,sizeof(double));
     
+    // pots[0] = 1
+    // for(int i = 0; i <= n+n){
+    //     pots[i] = pot[i-1]*x->mat[i];
+    // }
+
     // monta o vetor que contém os n+n somatórios
     for(int i = 0; i <= n+n; i++){
         for(int j = 0; j < n; j++){
+            // possivel otimizar
             somas[i] += pow(x->mat[j], i);
         }
     }
@@ -36,9 +51,11 @@ struct matriz *montaAjuste(struct matriz *x){
     kurwa = alocaMatriz(n+1, n+1);
     for(int i = 0; i < n+1; i++){
         for(int j = 0; j < n+1; j++){
-            kurwa->mat[i*n + j] = somas[i+j];
+            kurwa->mat[i*(n+1) + j] = somas[i+j];
         }
     }
+
+    free(somas);
 
     return kurwa;
 }
@@ -88,7 +105,7 @@ int main(){
                 break;
             }
             for(int j = 0; j < n; j++){
-                printf("%.8e ", x[j]);
+                printf("% .8e ", x[j]);
             }
             printf("\n");
             free(b);
@@ -100,6 +117,7 @@ int main(){
     struct matriz *somatorios;
 
     somatorios = montaAjuste(pontos);
+    
     for(int i = 0; i < m; i ++){
         struct matriz *U = NULL, *L = NULL;
         
@@ -113,7 +131,8 @@ int main(){
             double *x = NULL;
             double *y = NULL;
             double *b = calloc(n+1, sizeof(double));
-            for(int j = 0; j < n+1; j++){
+
+            for(int j = 0; j <= n; j++){
                 for(int k = 0; k < n; k++){
                     b[j] += funcs->mat[i*n + k]*pow(pontos->mat[k], j);
                 }
@@ -134,7 +153,7 @@ int main(){
                 break;
             }
             for(int j = 0; j < n; j++){
-                printf("%.8e ", x[j]);
+                printf("% .8e ", x[j]);
             }
             printf("\n");
             free(b);
