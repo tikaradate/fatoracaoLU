@@ -35,18 +35,19 @@ struct matriz *montaAjuste(struct matriz *x){
     double *somas = calloc(n+n,sizeof(double));
     double *pot  = calloc(n*(n+n),sizeof(double));
     
-    
-    for(int i = 0; i < n; i++){
-        pot[i] = 1;
-    }
+    // calculando potências separadas em uma matriz
+    // for(int i = 0; i < n; i++){
+    //     pot[i] = 1;
+    // }
 
-    for(int i = 1; i < n+n; i++){
-        for(int j = 0; j < n; j++){
-            // pot[i*n + j] = pot[(i-1)*n + j]*x->mat[j];
-            pot[i*n + j] = pow(x->mat[j], i);
-        }
-    }
-    
+    // for(int i = 1; i < n+n; i++){
+    //     for(int j = 0; j < n; j++){
+    //         pot[i*n + j] = pot[(i-1)*n + j]*x->mat[j];
+    //         // pot[i*n + j] = pow(x->mat[j], i);
+    //     }
+    // }
+    // fim
+
     // for(int i = 0; i <= n+n; i++){
     //     for(int j = 0; j < n; j++){
     //         printf("%.6lf ",  pot[i*n + j]);
@@ -56,12 +57,20 @@ struct matriz *montaAjuste(struct matriz *x){
 
 
     // monta o vetor que contém os n+n somatórios
+    // for(int i = 0; i < n+n; i++){
+    //     for(int j = 0; j < n; j++){
+    //         somas[i] += pot[i*n + j];
+    //         // printf("% .8e ", somas[i]);
+    //     }
+    //     // printf("\n");
+    // }
+
     for(int i = 0; i < n+n; i++){
         for(int j = 0; j < n; j++){
-            somas[i] += pot[i*n + j];
-            // printf("% .8e ", somas[i]);
+            if(i != 0)
+                somas[i] += pot[(i-1)*n + j]*x->mat[j];
+            else somas[i] += 1;
         }
-        // printf("\n");
     }
     
     kurwa = alocaMatriz(n, n);
@@ -151,7 +160,6 @@ int main(){
             for(int j = 0; j <= n; j++){
                 for(int k = 0; k < n; k++){
                     // printf("y_%d = % 0.8f; x^%d = % 0.8f ", k, funcs->mat[i*n + k], j,pow(pontos->mat[k], j));
-                    // parece ok pracaralho me fode
                     b[j] += funcs->mat[i*n + k]*pow(pontos->mat[k], j);
                 }
                 // printf("\n");
