@@ -22,7 +22,7 @@ struct matriz *alocaMatriz(int m, int n)
 
     matriz->m = m;
     matriz->n = n;
-    matriz->mat = malloc(sizeof(double *)*n*m);
+    matriz->mat = malloc(sizeof(double)*n*m);
     if(!matriz->mat){
         fprintf(stderr, "Falha ao alocar vetor de ponteiros de %d posições, abortando...\n", n);
         exit(1);

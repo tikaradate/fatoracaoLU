@@ -32,26 +32,42 @@ struct matriz *montaInterpolacao(struct matriz *x){
 struct matriz *montaAjuste(struct matriz *x){
     struct matriz *kurwa;
     int n = x->n;
-    double *somas = calloc(n+n+1,sizeof(double));
-    // double *pots  = calloc(n+n+1,sizeof(double));
+    double *somas = calloc(n+n,sizeof(double));
+    double *pot  = calloc(n*(n+n),sizeof(double));
     
-    // pots[0] = 1
-    // for(int i = 0; i <= n+n){
-    //     pots[i] = pot[i-1]*x->mat[i];
-    // }
+    
+    for(int i = 0; i < n; i++){
+        pot[i] = 1;
+    }
 
-    // monta o vetor que contém os n+n somatórios
-    for(int i = 0; i <= n+n; i++){
+    for(int i = 1; i < n+n; i++){
         for(int j = 0; j < n; j++){
-            // possivel otimizar
-            somas[i] += pow(x->mat[j], i);
+            // pot[i*n + j] = pot[(i-1)*n + j]*x->mat[j];
+            pot[i*n + j] = pow(x->mat[j], i);
         }
     }
     
-    kurwa = alocaMatriz(n+1, n+1);
-    for(int i = 0; i < n+1; i++){
-        for(int j = 0; j < n+1; j++){
-            kurwa->mat[i*(n+1) + j] = somas[i+j];
+    // for(int i = 0; i <= n+n; i++){
+    //     for(int j = 0; j < n; j++){
+    //         printf("%.6lf ",  pot[i*n + j]);
+    //     }
+    //     printf("\n");
+    // }
+
+
+    // monta o vetor que contém os n+n somatórios
+    for(int i = 0; i < n+n; i++){
+        for(int j = 0; j < n; j++){
+            somas[i] += pot[i*n + j];
+            // printf("% .8e ", somas[i]);
+        }
+        // printf("\n");
+    }
+    
+    kurwa = alocaMatriz(n, n);
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            kurwa->mat[i*n + j] = somas[i+j];
         }
     }
 
@@ -105,7 +121,7 @@ int main(){
                 break;
             }
             for(int j = 0; j < n; j++){
-                printf("% .8e ", x[j]);
+                printf("%lf ", x[j]);
             }
             printf("\n");
             free(b);
@@ -121,8 +137,8 @@ int main(){
     for(int i = 0; i < m; i ++){
         struct matriz *U = NULL, *L = NULL;
         
-        U = alocaMatriz(n+1, n+1);
-        L = alocaMatriz(n+1, n+1);
+        U = alocaMatriz(n, n);
+        L = alocaMatriz(n, n);
         copiaMatriz(somatorios, U);
         
         if(triangularizacao(L, U) != 0){
@@ -134,8 +150,11 @@ int main(){
 
             for(int j = 0; j <= n; j++){
                 for(int k = 0; k < n; k++){
+                    // printf("y_%d = % 0.8f; x^%d = % 0.8f ", k, funcs->mat[i*n + k], j,pow(pontos->mat[k], j));
+                    // parece ok pracaralho me fode
                     b[j] += funcs->mat[i*n + k]*pow(pontos->mat[k], j);
                 }
+                // printf("\n");
             }
             // acha y (Ly = b)
             flag = retrossubLower(L, b, &y);
@@ -153,7 +172,7 @@ int main(){
                 break;
             }
             for(int j = 0; j < n; j++){
-                printf("% .8e ", x[j]);
+                printf("%lf ", x[j]);
             }
             printf("\n");
             free(b);

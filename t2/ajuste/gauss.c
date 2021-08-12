@@ -36,6 +36,7 @@ int triangularizacao(struct matriz *L, struct matriz *U)
 
 			U->mat[j*n + i] = 0.0;
 			for (int k = i + 1; k < n; k++)
+				// duvidosa
 				U->mat[j*n + k] -= U->mat[i*n + k] * m;
 
 			L->mat[j*n + i] = m;
@@ -72,11 +73,12 @@ int retrossub(struct matriz *M, double* b, double **x){
 		aux[i] = b[i];
 		for (int j = i + 1; j < n; j++)
 		{
+			// duvidosa
 			aux[i] -= M->mat[i*n + j] * aux[j];
 		}
 		aux[i] /= M->mat[i*n + i];
-		if(isnan(aux[i]) || isinf(aux[i]))
-			return -1;
+		// if(isnan(aux[i]) || isinf(aux[i]))
+		// 	return -1;
 	}
 	*x = aux;
 	return 0;
@@ -91,6 +93,7 @@ int retrossubLower(struct matriz *M, double* b, double **x){
 		aux[i] = b[i];
 		for (int j = i - 1; j >= 0; j--)
 		{
+			// duvidosa
 			aux[i] -= M->mat[i*n + j] * aux[j];
 		}
 		aux[i] /= M->mat[i*n + i];
@@ -100,33 +103,4 @@ int retrossubLower(struct matriz *M, double* b, double **x){
 
 	*x = aux;
 	return 0;
-}
-
-double* residuo(struct matriz *M, double *x, double *colId)
-{
-	int n = M->n;
-	double *r = alocaVet(n);
-
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			r[i] += (M->mat[i*n + j] * x[j]);
-		}
-		// r tem o resultado da multiplicação após o laço acima
-		// subtraímos da coluna da matriz Identidade
-		// para então termos o resíduo
-		r[i] = colId[i] - r[i];
-	}
-	return r;
-}
-
-double normaL2Residuo(int n, double *res)
-{
-	double norma = 0;
-	for (int i = 0; i < n; i++)
-	{
-		norma += (res[i] * res[i]);
-	}
-	return fabs(sqrt(norma));
 }
