@@ -15,20 +15,21 @@ int triangularizacao(struct matriz *L, struct matriz *U)
 {
 	int m = U->m;
 	int n = U->n;
-	for (int i = 0; i < m; ++i)
-	{
-		for (int j = i + 1; j < n; j++)
-		{
-			double m = U->mat[j*n + i] / U->mat[i*n + i];
+	int fator = 2;
 
-			if(isnan(m) || isinf(m))
-				return -1;
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = i+1; j < n; j++)
+		{
+			double m1 = U->mat[j*n + i] / U->mat[i*n + i];
+			// if(isnan(m1 || isinf(m1))
+			// 	return -1;
 
 			U->mat[j*n + i] = 0.0;
-			for (int k = i + 1; k < n; k++)
-				U->mat[j*n + k] -= U->mat[i*n + k] * m;
-
-			L->mat[j*n + i] = m;
+			for (int k = i + 1; k < n; k++){
+				U->mat[j*n + k] -= U->mat[i*n + k] * m1;
+			}
+			L->mat[j*n + i] = m1;
 		}
 		L->mat[i*n + i] = 1;
 	}
