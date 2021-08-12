@@ -17,16 +17,6 @@ int triangularizacao(struct matriz *L, struct matriz *U)
 	int n = U->n;
 	for (int i = 0; i < m; ++i)
 	{
-
-		// int i_pivo = encontraMax(U, i);
-		// if (i != i_pivo)
-		// {  
-		// 	// efetua as trocas de linhas nas matrizes necessárias:
-		// 	// U e L 
-		// 	trocaLinha(U,  i, i_pivo);
-		// 	trocaLinha(L,  i, i_pivo);
-		// }
-
 		for (int j = i + 1; j < n; j++)
 		{
 			double m = U->mat[j*n + i] / U->mat[i*n + i];
@@ -36,7 +26,6 @@ int triangularizacao(struct matriz *L, struct matriz *U)
 
 			U->mat[j*n + i] = 0.0;
 			for (int k = i + 1; k < n; k++)
-				// duvidosa
 				U->mat[j*n + k] -= U->mat[i*n + k] * m;
 
 			L->mat[j*n + i] = m;

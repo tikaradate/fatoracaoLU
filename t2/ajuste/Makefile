@@ -9,7 +9,7 @@
     LFLAGS = -lm
 
       PROG = inter_ajuste
-      OBJS = utils.o matriz.o gauss.o
+      OBJS = utils.o matriz.o gauss.o interpolacao.o ajuste_curvas.o
 
 .PHONY: clean all
 
