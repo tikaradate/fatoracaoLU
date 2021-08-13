@@ -42,7 +42,6 @@ int triangularizacao_aa(struct matriz *L, struct matriz *U)
 	int fator = 8;
 
 
-    LIKWID_MARKER_START("triangularizacao_otimizada");
 	for (int i = 0; i < n; i++)
 	{
 		for (j = i + 1; (j+fator-1) < n - n % fator; j += fator)
@@ -97,7 +96,6 @@ int triangularizacao_aa(struct matriz *L, struct matriz *U)
 		}
 		L->mat[i * n + i] = 1;
 	}
-    LIKWID_MARKER_START("triangularizacao_otimizada");
 	return 0;
 }
 
