@@ -13,7 +13,7 @@
 
 .PHONY: clean all
 
-%.o: %.c %.h 
+%.o: %.c %.h utils.h
 	$(CC) -c $(CFLAGS) $<
 
 $(PROG) : % :  $(OBJS) %.o

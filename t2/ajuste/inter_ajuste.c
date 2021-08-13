@@ -35,11 +35,18 @@ int main(){
     ajuste_U = montaAjuste(pontos);
     ajuste_L = alocaMatriz(n, n);
 
+    
+    
     if (triangularizacao(ajuste_L, ajuste_U) != 0)
     {
         exit(-1);
     }
+
     // interpolacao
+    if (triangularizacao_original(ajuste_L, ajuste_U) != 0)
+    {
+        exit(-1);
+    }
     for(int i = 0; i < m; i ++){
         interpola(inter_U, inter_L, funcoes, i);
         ajusta(ajuste_U, ajuste_L, funcoes, pontos, i);

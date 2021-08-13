@@ -1,0 +1,40 @@
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz
+CPU type:	Intel Coffeelake processor
+CPU clock:	3.41 GHz
+--------------------------------------------------------------------------------
+19.492172 19.905009 -10.822326 -16.049416 -1.645397 
+-nan -nan -nan -nan -nan 
+-4.911754 -2.044422 16.746753 -11.417531 7.539299 
+-nan -nan -nan -nan -nan 
+3.879284 -1.731585 10.030701 10.137509 12.052350 
+-nan -nan -nan -nan -nan 
+-19.460569 10.911598 -4.974715 -16.189501 19.606437 
+-nan -nan -nan -nan -nan 
+--------------------------------------------------------------------------------
+Group 1: FLOPS_DP
++------------------------------------------+---------+--------+
+|                   Event                  | Counter | Core 3 |
++------------------------------------------+---------+--------+
+|             INSTR_RETIRED_ANY            |  FIXC0  | 418869 |
+|           CPU_CLK_UNHALTED_CORE          |  FIXC1  | 606539 |
+|           CPU_CLK_UNHALTED_REF           |  FIXC2  | 547836 |
+| FP_ARITH_INST_RETIRED_128B_PACKED_DOUBLE |   PMC0  |      0 |
+|    FP_ARITH_INST_RETIRED_SCALAR_DOUBLE   |   PMC1  |   9091 |
+| FP_ARITH_INST_RETIRED_256B_PACKED_DOUBLE |   PMC2  |      0 |
++------------------------------------------+---------+--------+
+
++----------------------+-----------+
+|        Metric        |   Core 3  |
++----------------------+-----------+
+|  Runtime (RDTSC) [s] |    0.0034 |
+| Runtime unhalted [s] |    0.0002 |
+|      Clock [MHz]     | 3773.1756 |
+|          CPI         |    1.4480 |
+|      DP MFLOP/s      |    2.6430 |
+|    AVX DP MFLOP/s    |         0 |
+|    Packed MUOPS/s    |         0 |
+|    Scalar MUOPS/s    |    2.6430 |
+|  Vectorization ratio |         0 |
++----------------------+-----------+
+
