@@ -5,7 +5,7 @@
 #include "matriz.h"
 #include "gauss.h"
 
-struct matriz *montaAjuste_original(struct matriz *x)
+struct matriz *montaAjuste(struct matriz *x)
 {
     struct matriz *kurwa;
     int n = x->n;
@@ -41,61 +41,6 @@ struct matriz *montaAjuste_original(struct matriz *x)
 
     return kurwa;
 }
-
-struct matriz *montaAjuste(struct matriz *x)
-{
-    struct matriz *kurwa;
-    int i;
-    int n = x->n;
-    double *somas = calloc(n + n, sizeof(double));
-    double *pot = calloc(n * (n + n), sizeof(double));
-
-    for (i = 0; i < n; i++)
-    {
-        pot[i] = 1;
-        somas[0] += 1;
-    }
-
-    
-    for (i = i; i < n+n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            pot[i * n + j] = pot[(i - 1) * n + j] * x->mat[j];
-            somas[i] += pot[(i + 0) * n + j];
-        }
-    }
-    
-    // preenche a matriz com os somatórios realizados acima
-    kurwa = alocaMatriz(n, n);
-    int fator = 8;
-    for (i = 0; i < n-n%fator; i+=fator)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            kurwa->mat[(i+0) * n + j] = somas[(i+0) + j];
-            kurwa->mat[(i+1) * n + j] = somas[(i+1) + j];
-            kurwa->mat[(i+2) * n + j] = somas[(i+2) + j];
-            kurwa->mat[(i+3) * n + j] = somas[(i+3) + j];
-            kurwa->mat[(i+4) * n + j] = somas[(i+4) + j];
-            kurwa->mat[(i+5) * n + j] = somas[(i+5) + j];
-            kurwa->mat[(i+6) * n + j] = somas[(i+6) + j];
-            kurwa->mat[(i+7) * n + j] = somas[(i+7) + j];
-        }
-    }
-    for (i = i; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            kurwa->mat[i * n + j] = somas[i + j];
-        }
-    }
-
-    free(somas);
-
-    return kurwa;
-}
-
 
 int ajusta(struct matriz *pontos, struct matriz *funcoes, struct matriz *somatorios, int i)
 {

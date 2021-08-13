@@ -5,7 +5,7 @@
 #     GRR20190367  
 
     CC     = gcc -g -std=c11
-    CFLAGS = -Wall
+    CFLAGS = -Wall -O3 -mavx2
     LFLAGS = -lm
 
       PROG = inter_ajuste
