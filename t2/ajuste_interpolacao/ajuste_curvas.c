@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -42,7 +43,7 @@ struct matriz *montaAjuste(struct matriz *x)
     return kurwa;
 }
 
-int ajusta(struct matriz *U, struct matriz *L, struct matriz *funcoes, struct matriz *pontos, int i)
+int ajusta(struct matriz *U, struct matriz *L, struct matriz *funcoes, struct matriz *pontos, int i, FILE *out)
 {
     int n, flag;
     n = U->n;
@@ -77,9 +78,9 @@ int ajusta(struct matriz *U, struct matriz *L, struct matriz *funcoes, struct ma
     }
     for (int j = 0; j < n; j++)
     {
-        printf("%lf ", x[j]);
+        fprintf(out, "%lf ", x[j]);
     }
-    printf("\n");
+    fprintf(out, "\n");
     free(b);
     free(x);
     free(y);

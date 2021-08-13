@@ -14,7 +14,7 @@
 // if(isnan(m1 || isinf(m1))
 // 	return -1;
 
-int triangularizacao(struct matriz *L, struct matriz *U)
+int triangularizacao_original(struct matriz *L, struct matriz *U)
 {
 	int n = U->n;
 	for (int i = 0; i < n; i++)
@@ -35,7 +35,7 @@ int triangularizacao(struct matriz *L, struct matriz *U)
 	return 0;
 }
 
-int triangularizacao_aa(struct matriz *L, struct matriz *U)
+int triangularizacao(struct matriz *L, struct matriz *U)
 {
 	int n = U->n;
 	int j;

@@ -9,7 +9,7 @@
     LFLAGS = -lm -L /home/soft/likwid/lib -llikwid
 
       PROG = inter_ajuste
-      OBJS = utils.o matriz.o gauss.o interpolacao.o ajuste_curvas.o
+      OBJS = utils.o matriz.o gauss.o interpolacao.o ajuste_curvas.o argumentos.o
 
 .PHONY: clean all
 

@@ -3,6 +3,6 @@
 
 struct matriz *montaInterpolacao(struct matriz *x);
 
-int interpola(struct matriz *U, struct matriz *L, struct matriz *funcoes, int i);
+int interpola(struct matriz *U, struct matriz *L, struct matriz *funcoes, int i, FILE *out);
 
 #endif

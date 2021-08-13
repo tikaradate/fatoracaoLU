@@ -3,5 +3,5 @@
 
 struct matriz *montaAjuste(struct matriz *x);
 
-int ajusta(struct matriz *U, struct matriz *L, struct matriz *funcoes, struct matriz *pontos, int i);
+int ajusta(struct matriz *U, struct matriz *L, struct matriz *funcoes, struct matriz *pontos, int i, FILE *out);
 #endif

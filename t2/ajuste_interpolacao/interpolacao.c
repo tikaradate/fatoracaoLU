@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -31,7 +32,7 @@ struct matriz *montaInterpolacao(struct matriz *x)
     return mat;
 }
 
-int interpola(struct matriz *U, struct matriz *L, struct matriz *funcoes, int i)
+int interpola(struct matriz *U, struct matriz *L, struct matriz *funcoes, int i, FILE *out)
 {
     int flag;
     flag = 0;
@@ -59,9 +60,10 @@ int interpola(struct matriz *U, struct matriz *L, struct matriz *funcoes, int i)
     }
     for (int j = 0; j < U->n; j++)
     {
-        printf("%lf ", x[j]);
+        fprintf(out, "%lf ", x[j]);
     }
-    printf("\n");
+    fprintf(out,"\n");
+
     free(b);
     free(x);
     free(y);
