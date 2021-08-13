@@ -23,6 +23,9 @@
         -1 se teve algum NaN ou inf e 0 se tudo ok
 */
 int triangularizacao(struct matriz *L, struct matriz *U);
+
+int triangularizacao_original(struct matriz *L, struct matriz *U);
+
 /* 
     descrição: encontra o maior elemento de tal coluna
     paramêtros: 

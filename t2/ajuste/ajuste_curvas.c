@@ -12,43 +12,21 @@ struct matriz *montaAjuste(struct matriz *x)
     double *somas = calloc(n + n, sizeof(double));
     double *pot = calloc(n * (n + n), sizeof(double));
 
-    // calcula as potências a partir da ideia de acessar o anterior e multiplicar pela base
-    // e faz a soma na hora
-
     for (int i = 0; i < n; i++)
     {
         pot[i] = 1;
+        somas[0] += 1;
     }
 
-    for (int i = 0; i < n + n; i++)
+    for (int i = 1; i < n + n; i++)
     {
         for (int j = 0; j < n; j++)
         {
-            if (i != 0)
-            {
-                pot[i * n + j] = pot[(i - 1) * n + j] * x->mat[j];
-            }
+            pot[i * n + j] = pot[(i - 1) * n + j] * x->mat[j];
             somas[i] += pot[i * n + j];
-            // somas[i] += pow(x->mat[j], i);
         }
     }
-
-    // for (int i = 0; i < n + n; i++)
-    // {
-    //     for (int j = 0; j < n; j++)
-    //     {
-    //         if(i != 0){
-    //             pot[i*n + j] = pot[(i-1)*n + j]*x->mat[j];
-    //             somas[i] += pot[i*n + j];
-    //         }
-    //         else{
-    //             pot[i*n + j] = 1;
-    //             somas[i] += 1;
-    //         }
-    //         // somas[i] += pow(x->mat[j], i);
-    //     }
-    // }
-
+    
     // preenche a matriz com os somatórios realizados acima
     kurwa = alocaMatriz(n, n);
     for (int i = 0; i < n; i++)
