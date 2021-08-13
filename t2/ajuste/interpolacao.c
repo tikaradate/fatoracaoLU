@@ -31,54 +31,39 @@ struct matriz *montaInterpolacao(struct matriz *x)
     return mat;
 }
 
-int interpola(struct matriz *pontos, struct matriz *funcoes, int i)
+int interpola(struct matriz *U, struct matriz *L, struct matriz *funcoes, int i)
 {
-    struct matriz *L, *U;
-    int n, flag;
-
-    n = pontos->n;
+    int flag;
     flag = 0;
 
-    U = montaInterpolacao(pontos);
-    L = alocaMatriz(n, n);
+    double *x = NULL,
+           *y = NULL,
+           *b = NULL;
+    // pega a coluna da matriz identidade a ser usada como b
+    b = pegaLinha(funcoes, i);
 
-    if (triangularizacao(L, U) != 0)
+    // acha y (Ly = b)
+    flag = retrossubLower(L, b, &y);
+    if (!y)
     {
-        printf("porra deu diferente de 0?\n");
-    }
-    else
-    {
-        double *x = NULL,
-               *y = NULL,
-               *b = NULL;
-        // pega a coluna da matriz identidade a ser usada como b
-        b = pegaLinha(funcoes, i);
-
-        // acha y (Ly = b)
-        flag = retrossubLower(L, b, &y);
-        if (!y)
-        {
-            free(b);
-            return flag;
-        }
-        // acha x (Ux = y)
-        flag = retrossub(U, y, &x);
-        if (!x)
-        {
-            free(b);
-            free(y);
-            return flag;
-        }
-        for (int j = 0; j < n; j++)
-        {
-            printf("%lf ", x[j]);
-        }
-        printf("\n");
         free(b);
-        free(x);
-        free(y);
+        return flag;
     }
-    liberaMatriz(U);
-    liberaMatriz(L);
+    // acha x (Ux = y)
+    flag = retrossub(U, y, &x);
+    if (!x)
+    {
+        free(b);
+        free(y);
+        return flag;
+    }
+    for (int j = 0; j < U->n; j++)
+    {
+        printf("%lf ", x[j]);
+    }
+    printf("\n");
+    free(b);
+    free(x);
+    free(y);
     return 0;
 }

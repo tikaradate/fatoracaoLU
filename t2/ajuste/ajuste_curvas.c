@@ -26,7 +26,7 @@ struct matriz *montaAjuste(struct matriz *x)
             somas[i] += pot[i * n + j];
         }
     }
-    
+
     // preenche a matriz com os somatórios realizados acima
     kurwa = alocaMatriz(n, n);
     for (int i = 0; i < n; i++)
@@ -42,61 +42,46 @@ struct matriz *montaAjuste(struct matriz *x)
     return kurwa;
 }
 
-int ajusta(struct matriz *pontos, struct matriz *funcoes, struct matriz *somatorios, int i)
+int ajusta(struct matriz *U, struct matriz *L, struct matriz *funcoes, struct matriz *pontos, int i)
 {
-    struct matriz *U, *L;
     int n, flag;
-
+    n = U->n;
     flag = 0;
-    n = somatorios->n;
 
-    U = alocaMatriz(n, n);
-    L = alocaMatriz(n, n);
-    copiaMatriz(somatorios, U);
+    double *x = NULL;
+    double *y = NULL;
+    double *b = calloc(n, sizeof(double));
 
-    if (triangularizacao(L, U) != 0)
+    for (int j = 0; j < n; j++)
     {
-        printf("porra deu diferente de 0?\n");
+        for (int k = 0; k < n; k++)
+        {
+            b[j] += funcoes->mat[i * n + k] * pow(pontos->mat[k], j);
+        }
     }
-    else
+
+    // acha y (Ly = b)
+    flag = retrossubLower(L, b, &y);
+    if (flag != 0)
     {
-        double *x = NULL;
-        double *y = NULL;
-        double *b = calloc(n + 1, sizeof(double));
-
-        for (int j = 0; j <= n; j++)
-        {
-            for (int k = 0; k < n; k++)
-            {
-                b[j] += funcoes->mat[i * n + k] * pow(pontos->mat[k], j);
-            }
-        }
-
-        // acha y (Ly = b)
-        flag = retrossubLower(L, b, &y);
-        if (!y)
-        {
-            free(b);
-            return flag;
-        }
-        // acha x (Ux = y)
-        flag = retrossub(U, y, &x);
-        if (!x)
-        {
-            free(b);
-            free(y);
-            return flag;
-        }
-        for (int j = 0; j < n; j++)
-        {
-            printf("%lf ", x[j]);
-        }
-        printf("\n");
         free(b);
-        free(x);
-        free(y);
+        return flag;
     }
-    liberaMatriz(U);
-    liberaMatriz(L);
+    // acha x (Ux = y)
+    flag = retrossub(U, y, &x);
+    if (flag != 0)
+    {
+        free(b);
+        free(y);
+        return flag;
+    }
+    for (int j = 0; j < n; j++)
+    {
+        printf("%lf ", x[j]);
+    }
+    printf("\n");
+    free(b);
+    free(x);
+    free(y);
     return 0;
 }
