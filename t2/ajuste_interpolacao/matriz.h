@@ -70,6 +70,7 @@ void trocaLinha(struct matriz *matriz, int atual, int pivo);
         c     : indica qual coluna vai ser copiada
     retorno: um ponteiro para a coluna
 */
+void trocaColuna(struct matriz *matriz, int atual, int pivo);
 
 double* pegaLinha(struct matriz *matriz, int l);
 

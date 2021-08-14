@@ -6,10 +6,12 @@
 #include "matriz.h"
 #include "gauss.h"
 
+extern int padding;
+
 struct matriz *montaAjuste(struct matriz *x)
 {
     struct matriz *kurwa;
-    int n = x->n;
+    int n = x->n - padding;
     double *somas = calloc(n + n, sizeof(double));
     double *pot = calloc(n * (n + n), sizeof(double));
 
@@ -46,7 +48,7 @@ struct matriz *montaAjuste(struct matriz *x)
 int ajusta(struct matriz *U, struct matriz *L, struct matriz *funcoes, struct matriz *pontos, int i, FILE *out)
 {
     int n, flag;
-    n = U->n;
+    n = U->n - padding;
     flag = 0;
 
     double *x = NULL;
@@ -81,6 +83,7 @@ int ajusta(struct matriz *U, struct matriz *L, struct matriz *funcoes, struct ma
         fprintf(out, "%lf ", x[j]);
     }
     fprintf(out, "\n");
+    
     free(b);
     free(x);
     free(y);

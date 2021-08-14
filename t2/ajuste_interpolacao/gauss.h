@@ -22,9 +22,9 @@
     retorno:
         -1 se teve algum NaN ou inf e 0 se tudo ok
 */
-int triangularizacao(struct matriz *L, struct matriz *U);
+int triangularizacao(struct matriz *L, struct matriz *U, struct matriz *funcoes);
 
-int triangularizacao_original(struct matriz *L, struct matriz *U);
+int triangularizacao_original(struct matriz *L, struct matriz *U, struct matriz *funcoes);
 
 /* 
     descrição: encontra o maior elemento de tal coluna

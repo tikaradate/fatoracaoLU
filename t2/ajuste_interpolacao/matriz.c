@@ -11,6 +11,8 @@
 
 #include "matriz.h"
 
+extern int padding;
+
 struct matriz *alocaMatriz(int m, int n)
 {
     struct matriz *matriz;
@@ -40,7 +42,7 @@ void liberaMatriz(struct matriz *matriz)
 void leMatriz(struct matriz *matriz)
 {   
     int m = matriz->m;
-    int n = matriz->n;
+    int n = matriz->n - padding;
 
     for (int i = 0; i < m; i++)
     {
@@ -54,7 +56,7 @@ void leMatriz(struct matriz *matriz)
 void imprimeMatriz(struct matriz *matriz, FILE *out)
 {
     int m = matriz->m;
-    int n = matriz->n;
+    int n = matriz->n - padding;
 
     for (int i = 0; i < m; i++)
     {
@@ -69,7 +71,7 @@ void imprimeMatriz(struct matriz *matriz, FILE *out)
 void copiaMatriz(struct matriz *source, struct matriz *dest)
 {
     int m = source->m;
-    int n = source->n;
+    int n = source->n - padding;
 
     dest->m = m;
     dest->n = n;
@@ -83,7 +85,8 @@ void trocaLinha(struct matriz *matriz, int atual, int pivo)
 {
 	double aux;
     int m = matriz->m;
-    int n = matriz->n;
+    int n = matriz->n - padding;
+    // ver
 	for (int i = 0; i < m; i++)
 	{
 		aux = matriz->mat[atual*n + i];
@@ -92,9 +95,30 @@ void trocaLinha(struct matriz *matriz, int atual, int pivo)
     }
 }
 
+void trocaColuna(struct matriz *matriz, int atual, int pivo)
+{
+	double aux;
+    int m = matriz->m;
+    int n = matriz->n - padding;
+
+	for (int i = 0; i < m; i++)
+	{
+		aux = matriz->mat[i*n + atual];
+		matriz->mat[i*n + atual] = matriz->mat[i*n + pivo];
+		matriz->mat[i*n + pivo] = aux;
+    }
+    // for (int i = 0; i < m; i++)
+	// {
+	// 	aux            = mat[i][atual];
+	// 	mat[i][atual]  = mat[i][pivo];
+	// 	mat[i][pivo] = aux;
+    // }
+}
+
+
 double* pegaLinha(struct matriz *matriz, int l){
 
-    int n = matriz->n;
+    int n = matriz->n - padding;
     double* lin = calloc(n, sizeof(double));
     if(!lin){
         fprintf(stderr, "Falha ao alocar vetor de %d posições, abortando...\n", n);
@@ -110,7 +134,7 @@ double* pegaLinha(struct matriz *matriz, int l){
 double* pegaColuna(struct matriz *matriz, int c){
 
     int m = matriz->m;
-    int n = matriz->n;
+    int n = matriz->n - padding;
     double* col = calloc(n, sizeof(double));
     if(!col){
         fprintf(stderr, "Falha ao alocar vetor de %d posições, abortando...\n", n);
@@ -126,7 +150,7 @@ double* pegaColuna(struct matriz *matriz, int c){
 void botaColuna(struct matriz *matriz, int c, double *col){
 
     int m = matriz->m;
-    int n = matriz->n;
+    int n = matriz->n - padding;
 
     for(int i = 0; i < m; i++){
         matriz->mat[i*n + c] = col[i];
@@ -136,7 +160,7 @@ void botaColuna(struct matriz *matriz, int c, double *col){
 int checaInversibilidade(struct matriz *matriz){
     double mult = 1;
     int m = matriz->m;
-    int n = matriz->n;
+    int n = matriz->n - padding;
     for(int i = 0; i < m; i++){
         mult *= matriz->mat[i*n + i];
     }
