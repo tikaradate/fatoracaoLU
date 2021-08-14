@@ -6,21 +6,23 @@
 #include "matriz.h"
 #include "gauss.h"
 
-extern int padding;
-
 struct matriz *montaAjuste(struct matriz *x)
 {
     struct matriz *kurwa;
-    int n = x->n - padding;
+    int n = x->n;
     double *somas = calloc(n + n, sizeof(double));
     double *pot = calloc(n * (n + n), sizeof(double));
 
+    // armazena a linha de uns a ser usada como base das potências 
+    // e sua respectiva soma
     for (int i = 0; i < n; i++)
     {
         pot[i] = 1;
         somas[0] += 1;
     }
 
+    // faz a potência do número, utilizando a anterior e logo em seguida bota o valor
+    // na soma
     for (int i = 1; i < n + n; i++)
     {
         for (int j = 0; j < n; j++)
@@ -30,16 +32,13 @@ struct matriz *montaAjuste(struct matriz *x)
         }
     }
 
-    // preenche a matriz com os somatórios realizados acima
+    // preenche a matriz com os somatórios calculados acima
     kurwa = alocaMatriz(n, n);
     for (int i = 0; i < n; i++)
-    {
         for (int j = 0; j < n; j++)
-        {
             kurwa->mat[i * n + j] = somas[i + j];
-        }
-    }
 
+    free(pot);
     free(somas);
 
     return kurwa;
@@ -48,20 +47,15 @@ struct matriz *montaAjuste(struct matriz *x)
 int ajusta(struct matriz *U, struct matriz *L, struct matriz *funcoes, struct matriz *pontos, int i, FILE *out)
 {
     int n, flag;
-    n = U->n - padding;
+    n = U->n;
     flag = 0;
 
     double *x = NULL;
     double *y = NULL;
-    double *b = calloc(n, sizeof(double));
+    double *b = NULL;
 
-    for (int j = 0; j < n; j++)
-    {
-        for (int k = 0; k < n; k++)
-        {
-            b[j] += funcoes->mat[i * n + k] * pow(pontos->mat[k], j);
-        }
-    }
+    // pega a linha adequada dos somátorios de que involvem as funções
+    b = pegaLinha(funcoes, i);
 
     // acha y (Ly = b)
     flag = retrossubLower(L, b, &y);
@@ -78,10 +72,9 @@ int ajusta(struct matriz *U, struct matriz *L, struct matriz *funcoes, struct ma
         free(y);
         return flag;
     }
+    // imprime o resutlado
     for (int j = 0; j < n; j++)
-    {
         fprintf(out, "%lf ", x[j]);
-    }
     fprintf(out, "\n");
     
     free(b);

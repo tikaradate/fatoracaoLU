@@ -10,20 +10,28 @@
 #ifndef __GAUSS__
 #define __GAUSS__
 /* 
-    descrição: realiza a triangularização de uma dada matriz(A), a separando em upper(U) e lower(L), levando em conta o pivoteamento
-               opcional em todas as matrizes que podem ser afetadas
+    descrição: realiza a triangularização de uma dada matriz(A), a separando em upper(U) e lower(L), pivoteando 
+               todas as matrizes que podem ser afetadas, possui uma otimização de Unroll & Jam
     paramêtros: 
         A : a matriz original
         L : a matriz lower
-        U : a matriz upper
-        Id: a matriz identidade
-        pivoteia: paramêtro que indica se é necessário o pivoteamento
-        tempo: variável que armazena o tempo das operações
+        funcoes: a matriz que armazena as funcoes
     retorno:
         -1 se teve algum NaN ou inf e 0 se tudo ok
 */
 int triangularizacao(struct matriz *L, struct matriz *U, struct matriz *funcoes);
 
+
+/* 
+    descrição: realiza a triangularização de uma dada matriz(A), a separando em upper(U) e lower(L), pivoteando 
+               todas as matrizes que podem ser afetadas
+    paramêtros: 
+        A : a matriz original
+        L : a matriz lower
+        funcoes: a matriz que armazena as funcoes
+    retorno:
+        -1 se teve algum NaN ou inf e 0 se tudo ok
+*/
 int triangularizacao_original(struct matriz *L, struct matriz *U, struct matriz *funcoes);
 
 /* 

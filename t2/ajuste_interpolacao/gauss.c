@@ -12,12 +12,9 @@
 #include "gauss.h"
 #include "utils.h"
 
-
-extern int padding ;
-
 int triangularizacao_original(struct matriz *L, struct matriz *U, struct matriz *funcoes)
 {
-	int n = U->n - padding;
+	int n = U->n;
 
 	for (int i = 0; i < n; i++)
 	{
@@ -52,21 +49,21 @@ int triangularizacao_original(struct matriz *L, struct matriz *U, struct matriz 
 
 int triangularizacao(struct matriz *L, struct matriz *U, struct matriz *funcoes)
 {
-	int n = U->n - padding;
+	int n = U->n;
 	int j;
 	int fator = 2;
 
 	for (int i = 0; i < n ; i++)
 	{
-		// int i_pivo = encontraMax(U, i);
-		// if (i != i_pivo)
-		// {  
-		// 	// efetua as trocas de linhas nas matrizes necessárias:
-		// 	// U, L
-		// 	trocaLinha(U,  i, i_pivo);
-		// 	trocaLinha(L,  i, i_pivo);
-		// 	trocaColuna(funcoes, i, i_pivo);
-		// }
+		int i_pivo = encontraMax(U, i);
+		if (i != i_pivo)
+		{  
+			// efetua as trocas de linhas nas matrizes necessárias:
+			// U, L e a de funções
+			trocaLinha(U,  i, i_pivo);
+			trocaLinha(L,  i, i_pivo);
+			trocaColuna(funcoes, i, i_pivo);
+		}
 		for (j = i + 1; (j+fator-1) < n - n % fator; j += fator)
 		{
 			double m1 = U->mat[j * n + i] / U->mat[i * n + i];
@@ -104,7 +101,7 @@ int triangularizacao(struct matriz *L, struct matriz *U, struct matriz *funcoes)
 int encontraMax(struct matriz *M, int c)
 {
 	float max = 0;
-	int n = M->n - padding;
+	int n = M->n;
 	// no começo linha e coluna são iguais
 	// por isso temos essa inicialização
 	int max_l = c;
@@ -121,7 +118,7 @@ int encontraMax(struct matriz *M, int c)
 
 int retrossub(struct matriz *M, double *b, double **x)
 {
-	int n = M->n - padding;
+	int n = M->n;
 	double *aux = alocaVet(n);
 
 	for (int i = n - 1; i >= 0; i--)
@@ -142,7 +139,7 @@ int retrossub(struct matriz *M, double *b, double **x)
 
 int retrossubLower(struct matriz *M, double *b, double **x)
 {
-	int n = M->n - padding;
+	int n = M->n;
 	double *aux = alocaVet(n);
 
 	for (int i = 0; i < n; i++)
@@ -150,7 +147,6 @@ int retrossubLower(struct matriz *M, double *b, double **x)
 		aux[i] = b[i];
 		for (int j = i - 1; j >= 0; j--)
 		{
-			// duvidosa
 			aux[i] -= M->mat[i * n + j] * aux[j];
 		}
 		aux[i] /= M->mat[i * n + i];

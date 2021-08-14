@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+// necessário para compilar no ambiente de desenvolvimento,
+// caso precise das métricas, é descomentado
 //#define __LIKWID__
 #ifdef __LIKWID__
 #include <likwid.h>
@@ -13,40 +15,35 @@
 #include "interpolacao.h"
 #include "ajuste_curvas.h"
 
-int padding = 0;
-
 int main(int argc, char *argv[]){
 
     #ifdef __LIKWID__
     LIKWID_MARKER_INIT;
     #endif
-    struct argumentos args;
-    FILE *out;
-
-    int m, n, flag = 0;
+    int m, n;
     struct matriz *pontos;
     struct matriz *funcoes, *funcoes_inter, *funcoes_ajuste, *funcoes_dummy;
     struct matriz *inter_U, *inter_L;
     struct matriz *ajuste_U, *ajuste_L;
     struct matriz *dummy_U, *dummy_L;
 
+    struct argumentos args;
+    FILE *out;
     args = linha_de_comando(argc, argv);
     out = arruma_output(args.output);
 
-    scanf("%d %d", &n, &m);
-
-    if (log2(n) - (int) log(2) == 0){
-        padding = 1;
-        n += padding;
+    if(scanf("%d %d", &n, &m) == EOF){
+        fprintf(stderr, "Erro na leitura de tamanho da entrada, abortando...");
+        exit(-1);
     }
-    
+
     pontos = alocaMatriz(1, n);
     funcoes = alocaMatriz(m, n);
 
     leMatriz(pontos);
     leMatriz(funcoes);
     
-    // versão não otimizada da triangularização
+    // versão não otimizada da triangularização, apenas para comparação
     dummy_U = montaInterpolacao(pontos);
     dummy_L = alocaMatriz(n, n);
     funcoes_dummy = alocaMatriz(m, n);
@@ -62,6 +59,7 @@ int main(int argc, char *argv[]){
     LIKWID_MARKER_STOP("triangularizacao_old");
     #endif
 
+
     // SL de interpolação com a versão otimizada da triangularização
     inter_U = montaInterpolacao(pontos);
     inter_L = alocaMatriz(n, n);
@@ -73,6 +71,7 @@ int main(int argc, char *argv[]){
     copiaMatriz(funcoes, funcoes_inter);
     if (triangularizacao(inter_L, inter_U, funcoes_inter) != 0)
     {
+        fprintf(stderr, "Erro na triangularização referente à interpolação, abortando...");
         exit(-1);
     }
     #ifdef __LIKWID__
@@ -89,15 +88,27 @@ int main(int argc, char *argv[]){
     ajuste_L = alocaMatriz(n, n);
     
     funcoes_ajuste = alocaMatriz(m, n);
-    copiaMatriz(funcoes, funcoes_ajuste);
+
+    // calcula todos somatórios que envolvem funções e guarda em uma matriz para uso futuro
+    for(int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            for (int k = 0; k < n; k++)
+                funcoes_ajuste->mat[i*n + j] += funcoes->mat[i * n + k] * pow(pontos->mat[k], j);
+
+
     if (triangularizacao(ajuste_L, ajuste_U, funcoes_ajuste) != 0)
     {
+        fprintf(stderr, "Erro na triangularização referente ao ajuste de curvas, abortando...");
         exit(-1);
     }
 
     for(int i = 0; i < m; i ++){
-        interpola(inter_U, inter_L, funcoes_inter, i, out);
-        ajusta(ajuste_U, ajuste_L, funcoes_ajuste, pontos, i, out);
+        if(interpola(inter_U, inter_L, funcoes_inter, i, out) != 0){
+            fprintf(stderr, "Erro na retrossubstituição da interpolação, pulando essa iteração");
+        }
+        if(ajusta(ajuste_U, ajuste_L, funcoes_ajuste, pontos, i, out) != 0){
+            fprintf(stderr, "Erro na retrossubstituição do ajuste de curvas, pulando essa iteração");
+        }
     }
 
     #ifdef __LIKWID__
@@ -109,6 +120,8 @@ int main(int argc, char *argv[]){
     liberaMatriz(ajuste_U);
     liberaMatriz(pontos);
     liberaMatriz(funcoes);
+    liberaMatriz(funcoes_inter);
+    liberaMatriz(funcoes_ajuste);
 
     return 0;
 }

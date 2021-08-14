@@ -56,13 +56,32 @@ void imprimeMatriz(struct matriz *matriz, FILE *out);
 */
 void copiaMatriz(struct matriz *source, struct matriz *dest);
 /* 
-    descrição: função que troca as linha atual da matriz com a linha do pivo da matriz
+    descrição: função que troca a linha atual da matriz com a linha do pivo da matriz
     paramêtros: 
         matriz: a matriz que terá as linhas trocadas
         atual : a linha da matriz atual
         pivo  : a linha com o maior elemento que trocará de lugar com a linha atual
 */
 void trocaLinha(struct matriz *matriz, int atual, int pivo);
+
+/* 
+    descrição: função que troca a coluna atual da matriz com a coluna do pivo da matriz
+    paramêtros: 
+        matriz: a matriz que terá as linhas trocadas
+        atual : a coluna da matriz atual
+        pivo  : a coluna com o maior elemento que trocará de lugar com a linha atual
+*/
+void trocaColuna(struct matriz *matriz, int atual, int pivo);
+
+/* 
+    descrição: função que retorna a linha da matriz indicada por l 
+    paramêtros: 
+        matriz: a matriz que terá a coluna copiada
+        l     : indica qual coluna vai ser copiada
+    retorno: um ponteiro para a linha
+*/
+double* pegaLinha(struct matriz *matriz, int l);
+
 /* 
     descrição: função que retorna a coluna da matriz indicada por c 
     paramêtros: 
@@ -70,10 +89,6 @@ void trocaLinha(struct matriz *matriz, int atual, int pivo);
         c     : indica qual coluna vai ser copiada
     retorno: um ponteiro para a coluna
 */
-void trocaColuna(struct matriz *matriz, int atual, int pivo);
-
-double* pegaLinha(struct matriz *matriz, int l);
-
 double *pegaColuna(struct matriz *matriz, int c);
 /* 
     descrição: função que insere a coluna indicada por c na matriz
